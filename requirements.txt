@@ -1,0 +1,7 @@
+--extra-index-url https://download.pytorch.org/whl/cu117
+torch==2.0.0+cu117;python_version=="3.11"
+torch==1.13.1+cu117;implementation_version=="3.10.6"
+transformers
+librosa
+gradio
+faster-whisper
