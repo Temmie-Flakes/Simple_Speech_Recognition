@@ -1,15 +1,15 @@
 import argparse
 import torch
 parser = argparse.ArgumentParser()
-parser.add_argument('--repo_id','-m', default='guillaumekln/faster-whisper-large-v2', help='Path to model repo (default: guillaumekln/faster-whisper-large-v2)')
+parser.add_argument('--repo-id','-m', default='guillaumekln/faster-whisper-large-v2', help='Path to model repo (default: guillaumekln/faster-whisper-large-v2)')
 parser.add_argument('--device','-d', default='cuda', help='Device to use for inference (default: cuda)')
-parser.add_argument('--compute_type', default='float16', help='Compute type for inference (default: float16)')
+parser.add_argument('--compute-type', default='float16', help='Compute type for inference (default: float16)')
 parser.add_argument('--no-translate', action='store_true', help='Disable automatic translation')
 # parser.add_argument('--trans-word-ts', action='store_true', help='If set, the program will generate word-level timestamps for translations. It may be unreliable.')
 parser.add_argument('--force-overwrite','-f', action='store_true', help='If set, the program will overwrite any existing output files. If not set (default behavior), the program will skip writing to an output file that already exists.')
 parser.add_argument('--translate-lang','-t', default=None, help='Translate to another language other than English. This is not an official behavior.')
 parser.add_argument('--live', action='store_true', help='Enable live update of the output text')
-parser.add_argument('--cache_dir', default=None, help='Directory of the folder to download models. Ex: "models" will make/use a folder named models in the same directory as this program (~\\models\\). The default directory is C:\\Users\\[username]\\.cache\\huggingface\\hub\\')
+parser.add_argument('--cache-dir', default=None, help='Directory of the folder to download models. Ex: "models" will make/use a folder named models in the same directory as this program (~\\models\\). The default directory is C:\\Users\\[username]\\.cache\\huggingface\\hub\\')
 args = parser.parse_args()
 print(args)
 import glob
@@ -19,7 +19,11 @@ if args.cache_dir:
     cache_dir = (args.cache_dir+"/"+args.repo_id.split("/")[-1])
 else:
     cache_dir = args.repo_id
-    
+0
+
+#os.environ['TRANSFORMERS_CACHE'] = cache_dir
+#os.environ['PYTORCH_TRANSFORMERS_CACHE'] = '~/.cache/huggingfaces/'
+#print(os.getenv('TRANSFORMERS_CACHE'))
 
 #print(os.path.isdir(cache_dir))
 
@@ -31,6 +35,9 @@ else:
     kwargs = {}
     if cache_dir is not None:
         kwargs["local_dir"] = cache_dir
+        kwargs["cache_dir"] = cache_dir
+        # kwargs["local_dir"] = "C:/AI/MyThings/nimple Speech Recognition/ssd"
+        # kwargs["cache_dir"] = "C:/AI/MyThings/nimple Speech Recognition/sfw"
         kwargs["local_dir_use_symlinks"] = False
     allow_patterns = ["config.json","model.bin","tokenizer.json","vocabulary.txt",]
     model_path=huggingface_hub.snapshot_download(args.repo_id,allow_patterns=allow_patterns,**kwargs)#tqdm_class=disabled_tqdm,,

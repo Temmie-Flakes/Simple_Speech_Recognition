@@ -1,3 +1,3 @@
-venv\Scripts\python.exe Open_WebUI.py --cache_dir "modelsCache"
+venv\Scripts\python.exe Open_WebUI.py --cache-dir "modelsCache"
 
 PAUSE
