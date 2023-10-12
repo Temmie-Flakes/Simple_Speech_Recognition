@@ -19,7 +19,6 @@ if args.cache_dir:
     cache_dir = (args.cache_dir+"/"+args.repo_id.split("/")[-1])
 else:
     cache_dir = args.repo_id
-0
 
 #os.environ['TRANSFORMERS_CACHE'] = cache_dir
 #os.environ['PYTORCH_TRANSFORMERS_CACHE'] = '~/.cache/huggingfaces/'
