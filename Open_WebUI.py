@@ -47,6 +47,7 @@ from faster_whisper import WhisperModel
 model = WhisperModel(model_path, device=args.device, compute_type=args.compute_type)
 print("Model loaded.")  
 supported_languages = [
+    "",
     "Afrikaans", "Albanian", "Amharic", "Arabic", "Armenian", "Assamese",
     "Azerbaijani", "Bashkir", "Basque", "Belarusian", "Bengali", "Bosnian",
     "Breton", "Bulgarian", "Burmese", "Castilian", "Catalan", "Chinese",
@@ -67,6 +68,7 @@ supported_languages = [
     "Vietnamese", "Welsh", "Yiddish", "Yoruba"
 ]            
 language_codes = {
+    "": "",
     "Afrikaans": "af",
     "Albanian": "sq",
     "Amharic": "am",
@@ -328,8 +330,8 @@ with gr.Blocks() as demo:
     with gr.Row():
         with gr.Column():
             audio_files = gr.File(label="Audio or video files to transcribe",type="file")#,file_types=['audio', 'video', '.flv'])
-            translate_lang = gr.Dropdown(choices=supported_languages,label="Translate to language",allow_custom_value=True)
-            language = gr.Dropdown(choices=supported_languages, label="Force language",allow_custom_value=True)
+            translate_lang = gr.Dropdown(choices=supported_languages,label="Translate to language",allow_custom_value=True,value='')
+            language = gr.Dropdown(choices=supported_languages, label="Force language",allow_custom_value=True,value='')
             output_txtFile = gr.Checkbox(label="Write output to text file", value=True)
             useNewLines = gr.Radio(["Per sentence", "Per computed segment", "Don\'t put Newlines"], label="Where to put new lines", info="Applies to both .txt file output (if enabled) and text box output", type="index", value="Don\'t put Newlines")
             translate = gr.Checkbox(label="Automatic translation", value=True)
