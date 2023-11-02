@@ -255,7 +255,7 @@ def iterate_segments(segments,output_txtFile,useNewLines,outputFileName):
             segmentText=segment.text
             
         if (output_txtFile):
-            with open(outputFileName,'a') as f:
+            with open(outputFileName,'a', encoding="utf-8") as f:
                 f.write(segmentText)
                 
                 
@@ -358,4 +358,3 @@ with gr.Blocks() as demo:
     stopButton.click(ohNo, None, None, queue=False)
 demo.queue(max_size=30)
 demo.launch(inbrowser=True, show_error=True, share=False)       
-

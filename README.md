@@ -32,7 +32,7 @@ to:<br />
 or <br />
 `venv\Scripts\python.exe Open_WebUI.py --cache_dir "modelsCache" --device "cpu" --compute_type "float32"` <br />
 whichever one that works
-- when translating to a different language that has non utf-8(ascii) characters (Korean, Chinese, Arabic, etc... ) TURN OFF WRITING TO TEXT FILE. this is due to python automatically assuming text to UTF-8 when writing to a file
+- translating to a different language might not be reliable, not sure if its the model or my impementation.
 - When importing files, Gradio creates 2 temp files which are identical to the origional file. This can take up space and cause alot of read/writes to happen. Why does it make 2 and not 1 temp file? heck if i know... 
 - all the files get stored locally and can be used offline once ran atleast one time.<br />
 all nessarry files \*__should__\* all get stored within the same file as the program
@@ -46,7 +46,6 @@ The built in HuggingFace model installer cannot download models onto another dri
 
 Todo:
 ----
-- [ ] Fix UTF-8 formatting when outputting to file
 - [ ] force gradio to stop making temporary files
 - [ ] add autodetection for cuda gpu's
 - [ ] force huggingfaceHub to move files onto different drive.
