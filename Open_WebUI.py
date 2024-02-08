@@ -269,7 +269,7 @@ def iterate_segments(segments,output_txtFile,useNewLines,outputFileName):
 
                 
                                 
-def generate_subtitles(audio_files, translate_lang='', language='', output_txtFile=True, useNewLines=2 , translate=True,  beam_size=5): #word_ts=True, attach=False,
+def generate_subtitles(audio_files, translate_lang='', language='', output_txtFile=True, useNewLines=2 , translate=False,  beam_size=5): #word_ts=True, attach=False,
     #clear txt files
     global ohNoButton
     if ohNoButton:
@@ -279,7 +279,8 @@ def generate_subtitles(audio_files, translate_lang='', language='', output_txtFi
     if output_txtFile:
         outputFileName = (audio_files.name.split('.')[-2].split('\\')[-1])
         open(f'{outputFileName}_transcript.txt','w').close()
-        open(f'{outputFileName}_translate.txt','w').close()
+        if translate and ((translate_lang == '' and language != 'en') or (translate_lang != '' and language != translate_lang)):
+            open(f'{outputFileName}_translate.txt','w').close()
     else:
         outputFileName=None
     #outputFileName=audio_files.split
@@ -288,7 +289,7 @@ def generate_subtitles(audio_files, translate_lang='', language='', output_txtFi
     
     wholeText=""
     #print(audio_files)
-    
+    #print(audio_files_path)
 
     for audio_file in glob.glob(audio_files_path):
         name = '.'.join(audio_file.split('.')[:-1])
@@ -329,12 +330,12 @@ import gradio as gr
 with gr.Blocks() as demo:
     with gr.Row():
         with gr.Column():
-            audio_files = gr.File(label="Audio or video files to transcribe",type="file")#,file_types=['audio', 'video', '.flv'])
+            audio_files = gr.File(label="Audio or video files to transcribe",type="filepath")#,file_types=['audio', 'video', '.flv'])
             translate_lang = gr.Dropdown(choices=supported_languages,label="Translate to language",allow_custom_value=True,value='')
             language = gr.Dropdown(choices=supported_languages, label="Force language",allow_custom_value=True,value='')
             output_txtFile = gr.Checkbox(label="Write output to text file", value=True)
             useNewLines = gr.Radio(["Per sentence", "Per computed segment", "Don\'t put Newlines"], label="Where to put new lines", info="Applies to both .txt file output (if enabled) and text box output", type="index", value="Don\'t put Newlines")
-            translate = gr.Checkbox(label="Automatic translation", value=True)
+            translate = gr.Checkbox(label="Automatic translation", value=False)
             #word_ts = gr.Checkbox(label="Word-level timestamps", value=True)
             #attach = gr.Checkbox(label="Produce a video with embedded subtitles")
             beam_size = gr.Number(label="Beam size", value=5, precision=0)
