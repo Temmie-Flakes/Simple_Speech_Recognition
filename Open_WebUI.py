@@ -10,6 +10,7 @@ parser.add_argument('--force-overwrite','-f', action='store_true', help='If set,
 parser.add_argument('--translate-lang','-t', default=None, help='Translate to another language other than English. This is not an official behavior.')
 parser.add_argument('--live', action='store_true', help='Enable live update of the output text')
 parser.add_argument('--cache-dir', default=None, help='Directory of the folder to download models. Ex: "models" will make/use a folder named models in the same directory as this program (~\\models\\). The default directory is C:\\Users\\[username]\\.cache\\huggingface\\hub\\')
+parser.add_argument("--autolaunch", action='store_true', help="open the webui URL in the system's default browser upon launch", default=False)
 args = parser.parse_args()
 print(args)
 import glob
@@ -44,7 +45,7 @@ else:
 print("Loading model...")         
 from faster_whisper import WhisperModel
 
-model = WhisperModel(model_path, device=args.device, compute_type=args.compute_type)
+model = WhisperModel(model_path, device=args.device, compute_type=args.compute_type, local_files_only=True)
 print("Model loaded.")  
 supported_languages = [
     "",
@@ -326,6 +327,12 @@ def ohNo():
     ohNoButton = True
     print("Stopping stuff")
 
+def restartRecompile():
+    import sys
+    if '--autolaunch' in sys.argv:
+        sys.argv.remove('--autolaunch')
+    os.execl(sys.executable, 'python', __file__, *sys.argv[1:])
+
 import gradio as gr
 with gr.Blocks() as demo:
     with gr.Row():
@@ -341,6 +348,7 @@ with gr.Blocks() as demo:
             beam_size = gr.Number(label="Beam size", value=5, precision=0)
             button = gr.Button("Do Stuff")
             stopButton = gr.Button("Stop Stuff",variant="stop")
+            restartButton = gr.Button("Restart Program",variant="primary")
             
         with gr.Column():
             output_text = gr.Textbox(label='Output subtitle files',max_lines=30,interactive=True)
@@ -357,5 +365,6 @@ with gr.Blocks() as demo:
     beam_size
     ], outputs=output_text)
     stopButton.click(ohNo, None, None, queue=False)
+    restartButton.click(restartRecompile, None, None, queue=False)
 demo.queue(max_size=30)
-demo.launch(inbrowser=True, show_error=True, share=False)       
+demo.launch(inbrowser=args.autolaunch, show_error=True, share=False)       
