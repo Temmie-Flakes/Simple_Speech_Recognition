@@ -331,7 +331,7 @@ def restartRecompile():
     import sys
     if '--autolaunch' in sys.argv:
         sys.argv.remove('--autolaunch')
-    os.execl(sys.executable, 'python', __file__, *sys.argv[1:])
+    os.execl(sys.executable, 'python', '"'+__file__+'"', *sys.argv[1:])
 
 import gradio as gr
 with gr.Blocks() as demo:
